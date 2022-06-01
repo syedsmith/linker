@@ -1,0 +1,24 @@
+{
+    "name": "FirstApp",
+    "version": "2.0.0",
+    "description": "My first chrom extension",
+    "manifest_version": 3,
+    "author": "syed.smith",
+    "permissions": [
+        "storage"
+    ],
+    "action":{
+        "default_popup": "popup.html",
+        "default_title": "Test App"
+    },
+    "content_scripts": [
+        {
+            "matches":["<all_urls>"],
+            "js": ["content.js"]
+        }
+    ],
+    "chrome_url_overrides" : {
+        "newtab": "newtab.html"
+      }
+    
+}
