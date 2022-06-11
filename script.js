@@ -6,107 +6,95 @@ const store = {
   LINK: "link",
   NAME: "name",
   DESCRIPTION: "description",
-  ORDER: "order"
+  ORDER: "order",
+  CATEGORY: "category"
 }
 
 const resource = {
-  FAV_DOMAIN: "fav_domain"
+  FAVI_DOMAIN: "favi_domain"
 }
 
+function clearKeys(){
+  keyVal=store.MASTER;
+  console.log("clearing keys");
+  chrome.storage.local.remove([keyVal],function(){
+    var error = chrome.runtime.lastError;
+    console.log(error);   
+    if (error) {
+           console.error(error);
+       }
+   })
+
+}
+
+const getStoreValue = async (key) => {
+  return new Promise((resolve, reject) => {
+    chrome.storage.sync.get([key], function (result) {
+      if (result[key] === undefined) {
+        reject();
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+
 // Event Listerners
-document.getElementById("store_global").addEventListener("click", createStorageObj);
-document.getElementById("get_local").addEventListener("click", getFromLocal);
-document.getElementById("get_global").addEventListener("click", getFromGlobal);
+document.getElementById("addtonewtab").addEventListener("click", addLinkToNewTab);
+document.getElementById("ListKeys").addEventListener("click", listKeys);
+document.getElementById("clearKeys").addEventListener("click", clearKeys);
 
+async function addLinkToNewTab(){
+  const { hostname } = new URL(document.getElementById("linkurl").value);
+  let favicon_url = "http://www.google.com/s2/favicons?domain="+hostname;
+  let categ = document.getElementById("linkcategory").value;
+  let link = {
+    [store.LINK] : document.getElementById("linkurl").value,
+    [store.DESCRIPTION]: document.getElementById("linkdescr").value,
+    [resource.FAVI_DOMAIN]: favicon_url,
+    [store.NAME]: document.getElementById("linkname").value,
+    [store.CATEGORY]: categ
+  }
+  storeObj = await getStoreValue(store.MASTER);
+  if (typeof storeObj === 'undefined'){
+    storeObj = getNascentMasterObject();
+  }
+  if (!(storeObj[store.MASTER][store.CATEGORIES].includes(categ))){
+    storeObj[store.MASTER][store.CATEGORIES].push(categ);
+    storeObj[store.MASTER][store.LINKS][categ] = [];
+  }
+  storeObj[store.MASTER][store.LINKS][categ].push(link);
+  setStoreValue(storeObj);
+}
 
-function createStorageObj(){
-  let obj = {
+function getNascentMasterObject(){
+  return  {
     [store.MASTER]: 
     {
       [store.PROPERTIES]: {}, 
-      [store.CATEGORIES]: ["Office", "Personal"],
-      [store.LINKS]: [
-        [
-          {
-          [store.link] : "https://mail.google.com/mail/u/0/#inbox",
-          [store.DESCRIPTION]: "to access mail",
-          [resource.FAV_DOMAIN]: "mail.google.com",
-          [store.NAME]: "smith link"
-        },
-        {
-          [store.link] : "https://mail.google.com/mail/u/0/#inbox",
-          [store.DESCRIPTION]: "to access mail",
-          [resource.FAV_DOMAIN]: "mail.google.com",
-          [store.NAME]: "smith link"
-        }
-        ],
-        [
-          {
-          [store.link] : "https://mail.google.com/mail/u/0/#inbox",
-          [store.DESCRIPTION]: "to personal access mail",
-          [resource.FAV_DOMAIN]: "mail.google.com",
-          [store.NAME]: "smith link"
-        },
-        {
-          [store.link] : "https://mail.google.com/mail/u/0/#inbox",
-          [store.DESCRIPTION]: "to personal access mail",
-          [resource.FAV_DOMAIN]: "mail.google.com",
-          [store.NAME]: "smith link"
-        }
-        ]
-      ]
+      [store.CATEGORIES]: [],
+      [store.LINKS]: {}
     }
   }
-  storeGlobal(obj);
 }
 
-function storeGlobal(obj){
-  chrome.storage.sync.set(obj, function() {
-    console.log('Value is set to Global key ');
-  });
-}
-
-function storeToLocal(){
-    var key = "smith";
-    var value = "first_chrome_extension";
-    chrome.storage.local.set({[key]: value}, function() {
-        console.log('Value is set to local as ' + value);
-      });
-}
-
-function storeToGlobal(){
-    var key = "smith";
-    var value = "first_chrome_extension_app";
-    var obj = {}
-    
-    chrome.storage.sync.set({[key]: value}, function() {
-        console.log('Value is set to Global as ' + value);
-      });
-}
-
-function getFromGlobal(){
-    var key = "smith";
-    chrome.storage.sync.get(key, function(result) {
-        console.log('myLogin= '+JSON.stringify(result));
-        return result.key;
-      });
-
-      listKeys();
-
-}
-
-function getFromLocal(){
-    var key = "smith";
-    chrome.storage.local.get(key, function(result) {
-        console.log('myLogin= '+JSON.stringify(result));
-        return result.key;
-      });
+function setStoreValue(obj){
+  chrome.storage.sync.set(obj, function() {});
 }
 
 function listKeys(){
-  console.log("Listing keys");
   chrome.storage.sync.get(null, function(items) {
     var allKeys = Object.keys(items);
+    console.log("Listing keys");
     console.log(allKeys);
+
   });
 }
+
+function constructNewTab(){
+  console.log("constructNewTab");
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  console.log("DOMContentLoaded Listener");
+}, false);

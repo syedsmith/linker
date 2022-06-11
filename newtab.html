@@ -1,329 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html> 
 <head>
-    <title>Covid-19 Stats- UK</title>
+    <title>Linker</title>
     <meta charset="utf-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="newtab.css" rel="stylesheet">
 </head>
 
-<style>
-.link-container{
-    border-radius: 6px;
-    margin: 20px 0 40px;
-    padding: 20px;
-} 
-.link-container-bg{
-    background: linear-gradient(-45deg, hsl(196, 40%, 91%),hsl(196, 21%, 97%));
-}
-
-.link-holder{
-    border-radius: 6px;
-    margin: 5px 0 10px;
-    padding: 10px;
-    padding-bottom: 12px;
-    border: 0.5px;
-
-} 
-.link-holder:hover{
-    background: #c1c1c1b8;
-    border: 0.5px solid #29a0f521;
-}
-.link-holder-bg{
-    background: #29a0f521;
-}
-.link-title{
-    padding-left: 2px;
-    font-weight: 500;
-    font-size: 15px;
-    padding-right: 2px;
-}
-.link-descr{
-    padding-left: 5px;
-    font-size: 10px;
-    /* aspect-ratio: 1.5 / 0.1; */
-
-    /* Line truncate */
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-a{
-    text-decoration: none;
-    color: black;
-}
-a:hover {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-.categ-title{
-    font-weight: 500;
-    font-size: 16px;
-}
-.link-count{
-    font-weight: 400;
-    padding-left: 2px;
-    padding-right: 2px;
-    font-size: 12px;
-}
-.scroll {
-    aspect-ratio: 0.6/1;
-    overflow-x: hidden;
-    overflow-y: auto;
-    text-align:justify;
-}
-
-
-</style>
 
 <body>
-    <div class="container-fluid ">
+
+    <div class="fade hide" id="modal-backdrop" ></div>
+    <div class="offcanvas offcanvas-end hide w-50" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" aria-modal="true" role="dialog" style="visibility: visible;">
+        <div class="offcanvas-header">
+          <h5 id="offcanvasRightLabel">Edit categ <span id="edit-categ-title"></span></h5>
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="d-flex justify-content-end">
+                <div class="m-1"><span class="del-categ-link"><a class="delete-category" id="delete-category" href="#">Del Category</a></span></div>
+                <div class="m-1"><button id="save_categ_edit" class="btn btn-primary">Submit</button></div>
+            </div>
+            <div class="d-flex">
+                <div class="w-50 m-2 border">
+                    <div style="padding-left: 15px;padding-top: 5px;">
+                        <div>Drag & drop here to delete links</div>
+                    </div>
+                    <div id="delete_categ_links" class="drag-container w-100 " style="min-height:100px;"></div>
+                    
+                </div>
+                <div class="w-50 m-2 border">    
+                    <div style="padding-left: 15px;padding-top: 5px;">
+                        <div>Drag & drop to reorder links</div>
+                    </div>
+                    <div id="edit-categ-links-body"></div>
+                </div>
+            </div>
+        </div>
+      </div>
+      
+    
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+    <h5 id="offcanvasRightLabel">Offcanvas right</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    ...
+  </div>
+</div>
+
+
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <div style="margin-left: 14px;">
+                    <span style="font-weight: 400;font-family: math;">Links</span>
+                    <span style="font-weight: 900;font-family: math;">Linker</span>
+            </div>
+        </a>
+        <div class="form-check form-switch m-2">
+            <label class="form-check-label" for="mySwitch">Dark Mode</label>
+            <input class="form-check-input" type="checkbox" id="isdark" name="darkmode" unchecked>
+        </div>
+    </nav>
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-3">
-                <div class="link-container link-container-bg">
-                    <div>
-                        <div class="categ-title">Personal<span class="link-count">(6)</span></div>
-                    </div>
-                    
-                    <div class="scroll">
-                        <a href="">
-                        <div class="link-holder link-holder-bg">
-                            <div>
-                                <div class="d-flex row-flex">
-                                    <div><img loading="lazy" src="http://www.google.com/s2/favicons?domain=google.com" width="20" height="20"></div>
-                                    <div class="link-title">Smith Link</div>
-                                </div>
-                                <div class="link-descr">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-                                </div>
-                            </div>
-                        </div>
-                        </a>
-                        <div class="link-holder link-holder-bg">
-                            <div>
-                                <div class="d-flex row-flex">
-                                    <div><img loading="lazy" src="http://www.google.com/s2/favicons?domain=google.com" width="20" height="20"></div>
-                                    <div class="link-title">Smith Link</div>
-                                </div>
-                                <div class="link-descr">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="link-holder link-holder-bg">
-                            <div>
-                                <div class="d-flex row-flex">
-                                    <div><img loading="lazy" src="http://www.google.com/s2/favicons?domain=google.com" width="20" height="20"></div>
-                                    <div class="link-title">Smith Link</div>
-                                </div>
-                                <div class="link-descr">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-                                </div>
-                            </div>
-                        </div>
-                        
-                        
-                        <div class="link-holder link-holder-bg">
-                            <div>
-                                <div class="d-flex row-flex">
-                                    <div><img loading="lazy" src="http://www.google.com/s2/favicons?domain=google.com" width="20" height="20"></div>
-                                    <div class="link-title">Smith Link</div>
-                                </div>
-                                <div class="link-descr">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="link-holder link-holder-bg">
-                            <div>
-                                <div class="d-flex row-flex">
-                                    <div><img loading="lazy" src="http://www.google.com/s2/favicons?domain=google.com" width="20" height="20"></div>
-                                    <div class="link-title">Smith Link</div>
-                                </div>
-                                <div class="link-descr">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="link-holder link-holder-bg">
-                            <div>
-                                <div class="d-flex row-flex">
-                                    <div><img loading="lazy" src="http://www.google.com/s2/favicons?domain=google.com" width="20" height="20"></div>
-                                    <div class="link-title">Smith Link</div>
-                                </div>
-                                <div class="link-descr">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-                                </div>
-                            </div>
-                        </div>
-                        <div class="link-holder link-holder-bg">
-                            <div>
-                                <div class="d-flex row-flex">
-                                    <div><img loading="lazy" src="http://www.google.com/s2/favicons?domain=google.com" width="20" height="20"></div>
-                                    <div class="link-title">Smith Link</div>
-                                </div>
-                                <div class="link-descr">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-                                </div>
-                            </div>
-                        </div>
-                        <div class="link-holder link-holder-bg">
-                            <div>
-                                <div class="d-flex row-flex">
-                                    <div><img loading="lazy" src="http://www.google.com/s2/favicons?domain=google.com" width="20" height="20"></div>
-                                    <div class="link-title">Smith Link</div>
-                                </div>
-                                <div class="link-descr">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-                                </div>
-                            </div>
-                        </div>
-                        <div class="link-holder link-holder-bg">
-                            <div>
-                                <div class="d-flex row-flex">
-                                    <div><img loading="lazy" src="http://www.google.com/s2/favicons?domain=google.com" width="20" height="20"></div>
-                                    <div class="link-title">Smith Link</div>
-                                </div>
-                                <div class="link-descr">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            
-            </div>
-            <div class="col-3">
-                <div class="link-container link-container-bg">
-                    <div>
-                        <div class="categ-title">Office<span class="link-count">(6)</span></div>
-                    </div>
-                    
-                    <div class="scroll">
-                        <div class="link-holder link-holder-bg">
-                            <div>
-                                <div class="d-flex row-flex">
-                                    <div><img loading="lazy" src="http://www.google.com/s2/favicons?domain=google.com" width="20" height="20"></div>
-                                    <div class="link-title">Smith Link</div>
-                                </div>
-                                <div class="link-descr">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="link-holder link-holder-bg">
-                            <div>
-                                <div class="d-flex row-flex">
-                                    <div><img loading="lazy" src="http://www.google.com/s2/favicons?domain=google.com" width="20" height="20"></div>
-                                    <div class="link-title">Smith Link</div>
-                                </div>
-                                <div class="link-descr">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="link-holder link-holder-bg">
-                            <div>
-                                <div class="d-flex row-flex">
-                                    <div><img loading="lazy" src="http://www.google.com/s2/favicons?domain=google.com" width="20" height="20"></div>
-                                    <div class="link-title">Smith Link</div>
-                                </div>
-                                <div class="link-descr line-truncate">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="link-holder link-holder-bg">
-                            <div>
-                                <div class="d-flex row-flex">
-                                    <div><img loading="lazy" src="http://www.google.com/s2/favicons?domain=google.com" width="20" height="20"></div>
-                                    <div class="link-title">Smith Link</div>
-                                </div>
-                                <div class="link-descr line-truncate">
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-3">
-                <div class="link-container link-container-bg">
-                    <div>
-                        <div class="categ-title">Task<span class="link-count">(2)</span></div>
-                    </div>
-                    
-                    <div class="scroll">
-                        <div class="link-holder link-holder-bg">
-                            <div>
-                                <div class="d-flex row-flex">
-                                    <div><img loading="lazy" src="http://www.google.com/s2/favicons?domain=google.com" width="20" height="20"></div>
-                                    <div class="link-title">Smith Link</div>
-                                </div>
-                                <div class="link-descr">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="link-holder link-holder-bg">
-                            <div>
-                                <div class="d-flex row-flex">
-                                    <div><img loading="lazy" src="http://www.google.com/s2/favicons?domain=google.com" width="20" height="20"></div>
-                                    <div class="link-title">Smith Link</div>
-                                </div>
-                                <div class="link-descr">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="link-holder link-holder-bg">
-                            <div>
-                                <div class="d-flex row-flex">
-                                    <div><img loading="lazy" src="http://www.google.com/s2/favicons?domain=google.com" width="20" height="20"></div>
-                                    <div class="link-title">Smith Link</div>
-                                </div>
-                                <div class="link-descr line-truncate">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="link-holder link-holder-bg">
-                            <div>
-                                <div class="d-flex row-flex">
-                                    <div><img loading="lazy" src="http://www.google.com/s2/favicons?domain=google.com" width="20" height="20"></div>
-                                    <div class="link-title">Smith Link</div>
-                                </div>
-                                <div class="link-descr line-truncate">
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            
-
+            <div class="col-3 column-container" id="col-1"></div>
+            <div class="col-3 column-container" id="col-2"></div>
+            <div class="col-3 column-container" id="col-3"></div>
+            <div class="col-3 column-container" id="col-4"></div>
         </div>
     </div>
-
-
-
-
 </body>
-<script src="script.js"></script>
+<script src="newtab.js"></script>
+<script src="draggable.js"></script>
 </html>

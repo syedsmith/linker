@@ -1,0 +1,120 @@
+.link-container{
+    border-radius: 6px;
+    margin: 20px 0 40px;
+    padding: 20px;
+} 
+.link-container-bg{
+    background: linear-gradient(-45deg, hsl(196, 40%, 91%),hsl(196, 21%, 97%));
+}
+
+.link-holder{
+    border-radius: 6px;
+    margin: 5px 0 10px;
+    padding: 10px;
+    padding-bottom: 12px;
+    border: 0.5px;
+
+} 
+.link-holder:hover{
+    background: #c1c1c1b8;
+}
+.link-holder-bg{
+    background: #29a0f521;
+    border: 0.5px solid #29a0f521;
+}
+.link-title{
+    padding-left: 2px;
+    font-weight: 500;
+    font-size: 15px;
+    padding-right: 2px;
+}
+.link-descr{
+    padding-left: 5px;
+    font-size: 10px;
+    /* aspect-ratio: 1.5 / 0.1; */
+
+    /* Line truncate */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.link{
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-bottom: 3px;
+    text-decoration: underline;
+}
+.rm-link-decoration{
+    text-decoration: none;
+    color: black;
+}
+.rm-link-decoration:hover {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+.categ-title{
+    font-weight: 500;
+    font-size: 16px;
+}
+.link-count{
+    font-weight: 400;
+    padding-left: 2px;
+    padding-right: 2px;
+    font-size: 12px;
+}
+.scroll {
+    max-height: 40rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align: justify;
+}
+.edit-categ-link{
+    font-size: 10px;
+    float: right;
+    margin-top: 5px;
+}
+
+.del-categ-link{
+    font-size: 10px;
+    /* margin-right: 18px;
+    margin-top: 5px; */
+}
+
+.drag-container{
+    padding-right: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 1rem;
+    margin-top: 1rem;
+}
+
+.draggable{
+    padding: 1rem;
+    background-color: white;
+    border: 1px solid black;
+    cursor: move;
+}
+
+.draggable.dragging{
+    background-color: rgb(103, 102, 102);
+
+}
+
+.backdrop-screen{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1040;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+    opacity: .5;
+}
+
+
+

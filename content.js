@@ -1,1 +1,1 @@
-console.log("chrome extension listening")
+console.log("chrome extension listening");
