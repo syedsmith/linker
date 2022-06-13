@@ -1,5 +1,4 @@
 function draggableInit(){
-  console.log("init dragging");
   const draggables = document.querySelectorAll(".draggable");
   const dragContainers = document.querySelectorAll(".drag-container");
 

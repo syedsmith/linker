@@ -1,7 +1,11 @@
 .link-container{
     border-radius: 6px;
-    margin: 20px 0 40px;
-    padding: 20px;
+    margin-top: 15px;
+    margin-right: 0px;
+    margin-bottom: 10px;
+    margin-left: 0px;
+    padding: 10px;
+    /* border-top: 0.5px solid black; */
 } 
 .link-container-bg{
     background: linear-gradient(-45deg, hsl(196, 40%, 91%),hsl(196, 21%, 97%));
@@ -9,18 +13,27 @@
 
 .link-holder{
     border-radius: 6px;
-    margin: 5px 0 10px;
+    margin: 10px 0 5px;
+    padding: 8px;
+    padding-bottom: 12px;
+    border: 0.5px;
+    background: #29a0f521;
+    border: 0.5px solid #29a0f521;
+} 
+
+.link-holder-drag{
+    border-radius: 6px;
+    margin: 5px 0 5px;
     padding: 10px;
     padding-bottom: 12px;
     border: 0.5px;
-
-} 
-.link-holder:hover{
-    background: #c1c1c1b8;
-}
-.link-holder-bg{
     background: #29a0f521;
     border: 0.5px solid #29a0f521;
+    width:90%;
+} 
+
+.link-holder:hover{
+    background: #c1c1c1b8;
 }
 .link-title{
     padding-left: 2px;
@@ -94,7 +107,7 @@
 }
 
 .draggable{
-    padding: 1rem;
+    /* padding: 1rem; */
     background-color: white;
     border: 1px solid black;
     cursor: move;
@@ -114,6 +127,22 @@
     height: 100vh;
     background-color: #000;
     opacity: .5;
+}
+.w-60{
+    width: 60%!important;
+}
+
+.w-20{
+    width: 20%!important;
+}
+
+.w-max-50{
+    max-width: 50%!important;
+}
+
+.categ-reorder{
+    font-size: 15px;
+    padding-left: 11px;
 }
 
 

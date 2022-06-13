@@ -13,7 +13,7 @@ const store = {
     FAVI_DOMAIN: "favi_domain"
   }
 
-const cols = ["col-1", "col-2", "col-3", "col-4"]
+const cols = ["col-1", "col-2", "col-3", "col-4", "col-5"]
 const colslen = cols.length;
 
 function getNxtColIdx(curIdx){
@@ -59,7 +59,7 @@ const getStoreValue = async (key) => {
         links.forEach(function(link, index){
             // console.log(link);la
             domDivs +=`<a class="rm-link-decoration" href="${link[store.LINK]}">
-            <div class="link-holder link-holder-bg">
+            <div class="link-holder">
                 <div>
                     <div class="d-flex row-flex">
                         <div><img loading="lazy" src="${link[resource.FAVI_DOMAIN]}" width="20" height="20" style="margin-top: -8px;"></div>
@@ -87,7 +87,7 @@ const getStoreValue = async (key) => {
     var domDivs = `<div class="drag-container" style="min-height:100px;" id="edit-categ-links" data-type-categ="${category}">`;
     categLinksObj.forEach(function(link, index){
       domDivs +=`
-            <div class="link-holder link-holder-bg draggable" draggable="true" data-type-link-index="${index}">
+            <div class="link-holder-drag link-holder-bg draggable" draggable="true" data-type-link-index="${index}">
                 <div>
                     <div class="d-flex row-flex">
                         <div><img loading="lazy" src="${link[resource.FAVI_DOMAIN]}" width="20" height="20" style="margin-top: -8px;"></div>
@@ -134,20 +134,32 @@ const getStoreValue = async (key) => {
       editCategBtns[i].addEventListener("click", function(e){
         let categ = editCategBtns[i].getAttribute("data-type-categ");
         constructEditLinks(categ);
-        showBackDrop(); 
-        showCanvasSidebar();
+        showCanvasSidebar(".offcanvas-categ-edit-links");
       });
     }
 
     // Category Listeners close offcanvas on focus out
-    let closeBtn = document.querySelector(".btn-close");
-    closeBtn.addEventListener("click", closeCanvasEvent);
+    let closeBtns = document.querySelectorAll(".btn-close");
+    for(let i=0; i< closeBtns.length; i++){
+      closeBtns[i].addEventListener("click", () => {
+        hideCanvasSidebar(".offcanvas-categ-edit-links");hideCanvasSidebar(".offcanvas-categ-reorder");
+      });
+    }
+    
 
 
     // Listerner for saving the edited categ changes
     document.getElementById("save_categ_edit").addEventListener("click", function(e){
       saveCategChanges();
     });
+
+    // Listerner for category redorder
+    document.getElementById("category-reorder").addEventListener("click", function(e){
+      showCanvasSidebar(".offcanvas-categ-reorder");
+      draggableInit();
+    });
+
+
   }
 
   async function saveCategChanges(){
@@ -178,12 +190,6 @@ const getStoreValue = async (key) => {
     refreshNewTab();
   }
 
-
-
-  function closeCanvasEvent(){
-      hideBackDrop();hideCanvasSidebar();
-  }
-
   function emptyDomChilds(element) {
     while(element.firstElementChild) {
        element.firstElementChild.remove();
@@ -200,16 +206,19 @@ const getStoreValue = async (key) => {
     backdrop.classList.add("backdrop-screen", "show");
     backdrop.classList.remove("hide");
   }
-  function showCanvasSidebar(){
-    let canvas = document.querySelector(".offcanvas");
+  function showCanvasSidebar(className){
+    showBackDrop();
+    let canvas = document.querySelector(className);
     canvas.classList.add("show");
     canvas.classList.remove("hide");
   }
-  function hideCanvasSidebar(){
-    let canvas = document.querySelector(".offcanvas");
+  function hideCanvasSidebar(className){
+    hideBackDrop();
+    let canvas = document.querySelector(className);
     canvas.classList.remove("show");
     canvas.classList.add("hide");
   }
+
 
 
   async function delCategory(categ){
@@ -243,3 +252,18 @@ try {
   function setStoreValue(obj){
     chrome.storage.sync.set(obj, function() {});
   }
+
+
+  document.onkeydown = function(evt) {
+    evt = evt || window.event;
+    var isEscape = false; 
+    if ("key" in evt) {
+        isEscape = (evt.key === "Escape" || evt.key === "Esc");
+    } else {
+        isEscape = (evt.keyCode === 27);
+    }
+    if (isEscape) {
+      hideCanvasSidebar(".offcanvas-categ-edit-links");
+      hideCanvasSidebar(".offcanvas-categ-reorder");
+    }
+};

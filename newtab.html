@@ -7,11 +7,10 @@
     <link href="newtab.css" rel="stylesheet">
 </head>
 
-
 <body>
 
     <div class="fade hide" id="modal-backdrop" ></div>
-    <div class="offcanvas offcanvas-end hide w-50" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" aria-modal="true" role="dialog" style="visibility: visible;">
+    <div class="offcanvas offcanvas-end offcanvas-categ-edit-links hide w-60" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" aria-modal="true" role="dialog" style="visibility: visible;">
         <div class="offcanvas-header">
           <h5 id="offcanvasRightLabel">Edit categ <span id="edit-categ-title"></span></h5>
           <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -22,13 +21,14 @@
                 <div class="m-1"><button id="save_categ_edit" class="btn btn-primary">Submit</button></div>
             </div>
             <div class="d-flex">
+                
                 <div class="w-50 m-2 border">
                     <div style="padding-left: 15px;padding-top: 5px;">
                         <div>Drag & drop here to delete links</div>
                     </div>
                     <div id="delete_categ_links" class="drag-container w-100 " style="min-height:100px;"></div>
-                    
                 </div>
+
                 <div class="w-50 m-2 border">    
                     <div style="padding-left: 15px;padding-top: 5px;">
                         <div>Drag & drop to reorder links</div>
@@ -37,28 +37,50 @@
                 </div>
             </div>
         </div>
-      </div>
-      
-    
+    </div>
 
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-  <div class="offcanvas-header">
-    <h5 id="offcanvasRightLabel">Offcanvas right</h5>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-    ...
-  </div>
-</div>
+    <div class="offcanvas offcanvas-end offcanvas-categ-reorder hide w-60" tabindex="-1" aria-labelledby="offcanvasRightLabel" aria-modal="true" role="dialog" style="visibility: visible;">
+        <div class="offcanvas-header">
+          <h5 id="offcanvasRightLabel">Reorder Categories</h5>
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="d-flex ">
+                <div id="categ-reorder-index-0" class="drag-container w-100 border rounded m-1" style="min-height:100px;">
+                    <div class="link-holder-drag link-holder-bg draggable" draggable="true">Family</div>
+                    <div class="link-holder-drag link-holder-bg draggable" draggable="true">Food</div>
+                </div>
+                <div id="categ-reorder-index-1" class="drag-container w-100 border rounded m-1" style="min-height:100px;">
+                    <div class="link-holder-drag link-holder-bg draggable" draggable="true">Family</div>
+                    <div class="link-holder-drag link-holder-bg draggable" draggable="true">Food</div>
+                </div>
+                <div id="categ-reorder-index-2" class="drag-container w-100 border rounded m-1" style="min-height:100px;">
+                    <div class="link-holder-drag link-holder-bg draggable" draggable="true">Family</div>
+                    <div class="link-holder-drag link-holder-bg draggable" draggable="true">Food</div>
+                </div>
+                <div id="categ-reorder-index-3" class="drag-container w-100 border rounded m-1" style="min-height:100px;">
+                    <div class="link-holder-drag link-holder-bg draggable" draggable="true">Family</div>
+                    <div class="link-holder-drag link-holder-bg draggable" draggable="true">Food</div>
+                </div>    
+            </div>
+            
+        </div>
+    </div>
 
 
     <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="#">
-            <div style="margin-left: 14px;">
+        <div class="navbar-brand">
+            <div class=" d-flex column-flex">
+                <div style="margin-left: 14px;">
                     <span style="font-weight: 400;font-family: math;">Links</span>
                     <span style="font-weight: 900;font-family: math;">Linker</span>
+                </div>            
+                <div>
+                    <span class="categ-reorder"><a id="category-reorder" href="#">Category reorder</a></span>    
+                </div>                            
             </div>
-        </a>
+        </div>
+
         <div class="form-check form-switch m-2">
             <label class="form-check-label" for="mySwitch">Dark Mode</label>
             <input class="form-check-input" type="checkbox" id="isdark" name="darkmode" unchecked>
@@ -66,10 +88,11 @@
     </nav>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-3 column-container" id="col-1"></div>
-            <div class="col-3 column-container" id="col-2"></div>
-            <div class="col-3 column-container" id="col-3"></div>
-            <div class="col-3 column-container" id="col-4"></div>
+            <div class="w-20 column-container" id="col-1"></div>
+            <div class="w-20 column-container" id="col-2"></div>
+            <div class="w-20 column-container" id="col-3"></div>
+            <div class="w-20 column-container" id="col-4"></div>
+            <div class="w-20 column-container" id="col-5"></div>
         </div>
     </div>
 </body>
