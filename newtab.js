@@ -44,7 +44,6 @@ const getStoreValue = async (key) => {
       console.log(e);
       return;
     }
-    console.log(storeObj);
     colIdx = 0;
     categoriesArr = storeObj[store.MASTER][store.CATEGORIES];
     categLinksObj = storeObj[store.MASTER][store.LINKS];
@@ -73,7 +72,6 @@ const getStoreValue = async (key) => {
         <div class="scroll" id="${categoryId}-scroll">`;
 
         links.forEach(function(link, index){
-            // console.log(link);la
             domDivs +=`<a class="rm-link-decoration" href="${link[store.LINK]}">
             <div class="link-holder">
                 <div>
