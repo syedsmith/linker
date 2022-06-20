@@ -7,7 +7,8 @@ const store = {
     NAME: "name",
     DESCRIPTION: "description",
     ORDER: "order",
-    CATEGORY: "category"
+    CATEGORY: "category",
+    DARK_MODE: "dark-mode"
   }
   const resource = {
     FAVI_DOMAIN: "favi_domain"
@@ -16,11 +17,12 @@ const store = {
 const cols = ["col-1", "col-2", "col-3", "col-4", "col-5"]
 const colslen = cols.length;
 
-function getNxtColIdx(curIdx){
-    nxtIdx = curIdx + 1;
-    if (nxtIdx == colslen){ nxtIdx = 0; }
-    return nxtIdx;
-}
+// function getNxtColIdx(curIdx){
+//     nxtIdx = curIdx + 1;
+//     if (nxtIdx == colslen){ nxtIdx = 0; }
+//     return nxtIdx;
+// }
+
 
 const getStoreValue = async (key) => {
     return new Promise((resolve, reject) => {
@@ -44,10 +46,24 @@ const getStoreValue = async (key) => {
     }
     console.log(storeObj);
     colIdx = 0;
-    categories = storeObj[store.MASTER][store.CATEGORIES];
+    categoriesArr = storeObj[store.MASTER][store.CATEGORIES];
     categLinksObj = storeObj[store.MASTER][store.LINKS];
+    props = storeObj[store.MASTER][store.PROPERTIES];
+    
+    // Dark Mode 
+    let isDarkModeEnabled = false;
+    if (props && props[store.DARK_MODE]){
+      isDarkModeEnabled = props[store.DARK_MODE];
+    }
+    document.getElementById("toggle-dark-mode").checked = isDarkModeEnabled;
+    drawDarkMode(isDarkModeEnabled);
+    
+    var columnBody = document.getElementById("column-body");
+    for(let containerNum = 0; containerNum<categoriesArr.length; containerNum++)
+    { 
+      colCategories = categoriesArr[containerNum];
 
-    categories.forEach(function(category){ 
+      colCategories.forEach(function(category){
         links = categLinksObj[category];
         if (typeof links === 'undefined'){ return; }
 
@@ -73,10 +89,10 @@ const getStoreValue = async (key) => {
             </div>
             </a>`;
         });
-        domDivs +="</div></div>"
-        document.getElementById(cols[colIdx]).appendChild(new DOMParser().parseFromString(domDivs, 'text/html').getRootNode().firstChild);
-        colIdx = getNxtColIdx(colIdx)
-    });
+        domDivs +="</div></div>";
+        columnBody.querySelector("#"+cols[containerNum]).appendChild(new DOMParser().parseFromString(domDivs, 'text/html').getRootNode().body.firstChild);
+      });
+    };
     addEventListerners();
   }
 
@@ -108,19 +124,13 @@ const getStoreValue = async (key) => {
     draggableInit();
     document.getElementById("delete-category").setAttribute("data-type-categ", category);
     document.getElementById("edit-categ-title").innerHTML = category;
-    
-
   }
 
   function addEventListerners(){
-    console.log("addEventListerners");
     
     // Category Listeners - DELETE
     const linkContainerBtns = document.querySelectorAll('.delete-category');
     for (let i = 0; i < linkContainerBtns.length; i++) {
-      // Add the below line to invoke this listener
-      // <span class="del-categ"><a class="delete-category" data-type-categ="${category}" href="#">Del categ</a></span>
-
       linkContainerBtns[i].addEventListener('click', function (e) {
         if(confirm("Do you wish to delete category '"+(e.target.getAttribute("data-type-categ")) + "' and its links permanently ?\nClick OK to delete")){
           delCategory(e.target.getAttribute("data-type-categ"));
@@ -155,12 +165,90 @@ const getStoreValue = async (key) => {
 
     // Listerner for category redorder
     document.getElementById("category-reorder").addEventListener("click", function(e){
+      buildReorderCategs();
       showCanvasSidebar(".offcanvas-categ-reorder");
-      draggableInit();
+    });
+
+    // Listerner for SAVING category redorder
+    document.getElementById("save_categ_order").addEventListener("click", function(e){
+      saveCategReorder()
     });
 
 
+    document.getElementById("toggle-dark-mode").addEventListener("change", function(e){
+      updateDarkMode(this.checked);
+    });
+}
+
+async function updateDarkMode(isEnable){
+  let storeObj;
+  try{ storeObj = await getStoreValue(store.MASTER); }catch(e){ console.log(e); return; }
+  storeObj[store.MASTER][store.PROPERTIES][store.DARK_MODE] = isEnable
+  setStoreValue(storeObj)
+  drawDarkMode(isEnable);
+}
+
+function drawDarkMode(isEnable){
+  let navbar = document.querySelector("nav");
+  let body = document.querySelector("body");
+  let label = document.querySelector("label");
+  if(isEnable){
+    body.classList.add("bg-black");
+    navbar.classList.add("navbar-dark", "bg-black");
+    navbar.classList.remove("navbar-light", "bg-light");
+    label.classList.add("text-white");
   }
+  else{
+    body.classList.remove("bg-black");
+    navbar.classList.remove("navbar-dark", "bg-black");
+    navbar.classList.add("navbar-light", "bg-light");
+    label.classList.remove("text-white");
+  }
+  
+
+}
+
+async function saveCategReorder(){
+  let storeObj;
+    try{ storeObj = await getStoreValue(store.MASTER); }catch(e){ console.log(e); return; }
+    let newCategOrder = []
+    for(let i = 0; i<colslen; i++){
+      let colContainer = document.getElementById("categ-reorder-index-"+i);
+      let newCategArr = [];
+      for(let j=0; j < colContainer.childNodes.length; j++ ){
+        if(colContainer.childNodes[j].nodeType != Node.TEXT_NODE){
+          newCategArr.push(colContainer.childNodes[j].getAttribute("data-type-categ"));
+        }
+      }
+      newCategOrder.push(newCategArr);
+    }
+    storeObj[store.MASTER][store.CATEGORIES] = newCategOrder;
+    setStoreValue(storeObj);
+    refreshNewTab();
+}
+
+  async function buildReorderCategs(){
+    let storeObj;
+    try{ storeObj = await getStoreValue(store.MASTER); }catch(e){ console.log(e); return; }
+    let categsColArr = storeObj[store.MASTER][store.CATEGORIES];
+
+    let containerDiv = `<div class="d-flex ">`;
+    for(let i = 0; i<colslen; i++){
+      containerDiv += `<div id="categ-reorder-index-${i}" class="drag-container w-100 border rounded m-1" style="min-height:100px;">`;
+      if(i < categsColArr.length){
+        for(let j=0; j<categsColArr[i].length; j++){
+          containerDiv +=`<div data-type-categ="${categsColArr[i][j]}" class="link-holder-drag link-holder-bg draggable" draggable="true">${categsColArr[i][j]}</div>`;
+        }
+      }
+      containerDiv +="</div>";
+    }
+    containerDiv += "</div>";
+    reorderBody = document.getElementById("categ_reorder_containers");
+    emptyDomChilds(reorderBody);
+    reorderBody.appendChild(new DOMParser().parseFromString(containerDiv, 'text/html').getRootNode().body.firstChild);
+    draggableInit();
+  }
+
 
   async function saveCategChanges(){
     let categLinks = document.getElementById("edit-categ-links");
@@ -228,10 +316,14 @@ const getStoreValue = async (key) => {
       console.log(e);
       return;
     }
-    let categs = storeObj[store.MASTER][store.CATEGORIES];
-    const index = categs.indexOf(categ);
-    if (index > -1) {
-      storeObj[store.MASTER][store.CATEGORIES].splice(index, 1);
+    let categsColArr = storeObj[store.MASTER][store.CATEGORIES];
+
+    for(let i=0; i< categsColArr.length; i++){
+      let ColArr = categsColArr[i];
+      const index = ColArr.indexOf(categ);
+      if (index > -1) {
+        ColArr.splice(index, 1);
+      }
     }
     delete storeObj[store.MASTER][store.LINKS][categ];
     setStoreValue(storeObj)

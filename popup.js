@@ -7,7 +7,8 @@ const store = {
     NAME: "name",
     DESCRIPTION: "description",
     ORDER: "order",
-    CATEGORY: "category"
+    CATEGORY: "category",
+    DARK_MODE: "dark-mode"
   }
   
   const resource = {
@@ -31,6 +32,18 @@ const store = {
   document.getElementById("addtonewtab").addEventListener("click", addLinkToNewTab);
   document.getElementById("ListKeys").addEventListener("click", listKeys);
   
+function getColWithMinCateg(arr){
+  let col = 0;
+  minLen = arr[0].length;
+  for(let i =1; i < arr.length; i++){
+    if(minLen > arr[i].length){
+      col = i;
+      minLen = arr[i].length;
+    }
+  }
+  return col;
+}
+
   async function addLinkToNewTab(){
     const { hostname } = new URL(document.getElementById("linkurl").value);
     let favicon_url = "http://www.google.com/s2/favicons?domain="+hostname;
@@ -51,8 +64,9 @@ const store = {
     if (typeof storeObj === 'undefined'){
       storeObj = getNascentMasterObject();
     }
-    if (!(storeObj[store.MASTER][store.CATEGORIES].includes(categ))){
-      storeObj[store.MASTER][store.CATEGORIES].push(categ);
+    storeCategs = storeObj[store.MASTER][store.CATEGORIES];
+    if (!(isCategAvailable(storeCategs, categ))){
+      storeCategs[getColWithMinCateg(storeCategs)].push(categ);
       storeObj[store.MASTER][store.LINKS][categ] = [];
     }
     storeObj[store.MASTER][store.LINKS][categ].push(link);
@@ -60,12 +74,23 @@ const store = {
     window.close();
   }
   
+  function isCategAvailable(storeCategs, categ){
+    for(let i=0; i<storeCategs.length; i++){
+      for(let j=0; j<storeCategs[i].length; j++){
+        if (storeCategs[i][j] == categ){
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  
   function getNascentMasterObject(){
     return  {
       [store.MASTER]: 
       {
-        [store.PROPERTIES]: {}, 
-        [store.CATEGORIES]: [],
+        [store.PROPERTIES]: {store.DARK_MODE : false}, 
+        [store.CATEGORIES]: [[],[],[],[],[]],
         [store.LINKS]: {}
       }
     }
@@ -86,20 +111,20 @@ const store = {
 
 
   async function addCategsDataList(){
-    console.log("addCategsDataList");
     try{
       storeObj = await getStoreValue(store.MASTER);
-    }catch(e){
-      console.log(e);
-      return;
-    }
-    let categs = storeObj[store.MASTER][store.CATEGORIES];
+    }catch(e){ console.log(e); return; }
+    let colCategs = storeObj[store.MASTER][store.CATEGORIES];
     let categDom = document.getElementById('linkcategs');
-    categs.forEach(function(categ){
-      let option = document.createElement('option');
-      option.value = categ;
-      categDom.appendChild(option);
-    });
+    for(let i =0; i< colCategs.length; i++){
+      let categs = colCategs[i];
+      categs.forEach(function(categ){
+        let option = document.createElement('option');
+        option.value = categ;
+        categDom.appendChild(option);
+      });
+    }
+    
   }
 
   addCategsDataList();
