@@ -30,7 +30,7 @@ const store = {
   
   // Event Listerners
   document.getElementById("addtonewtab").addEventListener("click", addLinkToNewTab);
-  document.getElementById("ListKeys").addEventListener("click", listKeys);
+  // document.getElementById("ListKeys").addEventListener("click", listKeys);
   
 function getColWithMinCateg(arr){
   let col = 0;
@@ -89,7 +89,7 @@ function getColWithMinCateg(arr){
     return  {
       [store.MASTER]: 
       {
-        [store.PROPERTIES]: {store.DARK_MODE : false}, 
+        [store.PROPERTIES]: {[store.DARK_MODE] : false}, 
         [store.CATEGORIES]: [[],[],[],[],[]],
         [store.LINKS]: {}
       }

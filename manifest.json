@@ -1,22 +1,16 @@
 {
     "name": "LinksLinker",
-    "version": "2.0.0",
-    "description": "Links Linker is used to organise links",
+    "version": "1.1",
+    "description": "Links Linker is used to organise links in a better and easy way",
     "manifest_version": 3,
-    "author": "syed.smith",
+    "author": "smith syed kasim",
     "permissions": [
         "storage"
     ],
     "action":{
         "default_popup": "popup.html",
-        "default_title": "Test App"
+        "default_title": "Links Linker"
     },
-    "content_scripts": [
-        {
-            "matches":["<all_urls>"],
-            "js": ["content.js"]
-        }
-    ],
     "chrome_url_overrides" : {
         "newtab": "newtab.html"
     }
