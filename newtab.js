@@ -38,12 +38,7 @@ const getStoreValue = async (key) => {
 
   async function constructLinks(){
     let storeObj;
-    try{
-      storeObj = await getStoreValue(store.MASTER);
-    }catch(e){
-      console.log(e);
-      return;
-    }
+    try{ storeObj = await getStoreValue(store.MASTER); }catch(e){ console.log(e); return; }
     colIdx = 0;
     categoriesArr = storeObj[store.MASTER][store.CATEGORIES];
     categLinksObj = storeObj[store.MASTER][store.LINKS];

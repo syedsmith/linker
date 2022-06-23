@@ -67,6 +67,8 @@ function getColWithMinCateg(arr){
     storeCategs = storeObj[store.MASTER][store.CATEGORIES];
     if (!(isCategAvailable(storeCategs, categ))){
       storeCategs[getColWithMinCateg(storeCategs)].push(categ);
+    }
+    if(!(categ in storeObj[store.MASTER][store.LINKS])){
       storeObj[store.MASTER][store.LINKS][categ] = [];
     }
     storeObj[store.MASTER][store.LINKS][categ].push(link);
