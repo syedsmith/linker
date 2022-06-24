@@ -53,6 +53,19 @@
         </div>
     </div>
 
+    <div class="offcanvas offcanvas-end offcanvas-import-json hide w-50" tabindex="-1" aria-labelledby="offcanvasRightLabel" aria-modal="true" role="dialog" style="visibility: visible;">
+        <div class="offcanvas-header">
+          <h5 id="offcanvasRightLabel">Import from json</h5>
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="d-flex justify-content-end">
+                <div class="m-1"><button id="save_import_json" class="btn btn-primary">Submit</button></div>
+            </div>
+            <textarea placeholder=" Paste linkslinker json here" class="w-100 h-50" id="imported_json"></textarea>
+        </div>
+    </div>
+
 
     <nav class="navbar navbar-light bg-light">
         <div class="navbar-brand">
@@ -66,11 +79,20 @@
                 </div>                            
             </div>
         </div>
+        
+        <div class="d-flex justify-content-between">
+            <div> <button class="btn btn-link" id="import_json" href="" >Import</button> </div>
 
-        <div class="form-check form-switch m-2">
-            <label class="form-check-label" for="mySwitch">Dark Mode</label>
-            <input class="form-check-input cursor-pointer" id="toggle-dark-mode" type="checkbox" name="darkmode" unchecked>
+            <div> <button class="btn btn-link" id="export_json" href="" >Export</button> </div>
+
+            <div class="form-check form-switch m-2">
+                <label class="form-check-label" for="mySwitch">Dark Mode</label>
+                <input class="form-check-input cursor-pointer" id="toggle-dark-mode" type="checkbox" name="darkmode" unchecked>
+            </div>
         </div>
+        
+
+        
     </nav>
     <div class="container-fluid">
         <div class="row" id="column-body">

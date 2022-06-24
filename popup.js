@@ -15,7 +15,6 @@ const store = {
     FAVI_DOMAIN: "favi_domain"
   }
   
-  
   const getStoreValue = async (key) => {
     return new Promise((resolve, reject) => {
       chrome.storage.sync.get([key], function (result) {

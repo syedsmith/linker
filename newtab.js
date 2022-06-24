@@ -16,20 +16,16 @@ const store = {
 
 const cols = ["col-1", "col-2", "col-3", "col-4", "col-5"]
 const colslen = cols.length;
-
-// function getNxtColIdx(curIdx){
-//     nxtIdx = curIdx + 1;
-//     if (nxtIdx == colslen){ nxtIdx = 0; }
-//     return nxtIdx;
-// }
-
+var liveStoreObject = "";
 
 const getStoreValue = async (key) => {
+
     return new Promise((resolve, reject) => {
       chrome.storage.sync.get([key], function (result) {
         if (result[key] === undefined) {
           reject();
         } else {
+          liveStoreObject = result[store.MASTER];
           resolve(result);
         }
       });
@@ -38,7 +34,7 @@ const getStoreValue = async (key) => {
 
   async function constructLinks(){
     let storeObj;
-    try{ storeObj = await getStoreValue(store.MASTER); }catch(e){ console.log(e); return; }
+    try{ storeObj = await getStoreValue(store.MASTER); }catch(e){console.log(e);addEventListerners(); return; }
     colIdx = 0;
     categoriesArr = storeObj[store.MASTER][store.CATEGORIES];
     categLinksObj = storeObj[store.MASTER][store.LINKS];
@@ -145,7 +141,7 @@ const getStoreValue = async (key) => {
     let closeBtns = document.querySelectorAll(".btn-close");
     for(let i=0; i< closeBtns.length; i++){
       closeBtns[i].addEventListener("click", () => {
-        hideCanvasSidebar(".offcanvas-categ-edit-links");hideCanvasSidebar(".offcanvas-categ-reorder");
+        hideCanvasSidebar(".offcanvas-categ-edit-links");hideCanvasSidebar(".offcanvas-categ-reorder");hideCanvasSidebar(".offcanvas-import-json");
       });
     }
     
@@ -168,9 +164,45 @@ const getStoreValue = async (key) => {
     });
 
 
+    // Toogling Dark Mode
     document.getElementById("toggle-dark-mode").addEventListener("change", function(e){
       updateDarkMode(this.checked);
     });
+
+    // Export as json listerner
+    document.getElementById("export_json").addEventListener("click", function(e){
+      downloadJsonFile("linkslinker.json");
+    });
+
+    // Listerner for Importing json offcanvas sidebar
+    document.getElementById("import_json").addEventListener("click", function(e){
+      showCanvasSidebar(".offcanvas-import-json");
+    });
+
+    // Listerner import json and save
+    document.getElementById("save_import_json").addEventListener("click", function(e){
+      saveImportJson();
+    });
+}
+
+
+function saveImportJson(){
+  let importObj =  {[store.MASTER]: JSON.parse(document.getElementById("imported_json").value)};
+  setStoreValue(importObj);
+  refreshNewTab();
+}
+
+
+function downloadJsonFile(fileName){
+    let text = JSON.stringify(liveStoreObject);
+    var link = document.createElement("a");
+    link.download = fileName;
+    var data = new Blob([text], {type: 'text/plain'});
+    link.href = window.URL.createObjectURL(data);;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    delete link;
 }
 
 async function updateDarkMode(isEnable){
@@ -197,8 +229,6 @@ function drawDarkMode(isEnable){
     navbar.classList.add("navbar-light", "bg-light");
     label.classList.remove("text-white");
   }
-  
-
 }
 
 async function saveCategReorder(){
@@ -300,15 +330,9 @@ async function saveCategReorder(){
     canvas.classList.add("hide");
   }
 
-
-
   async function delCategory(categ){
-    try{
-      storeObj = await getStoreValue(store.MASTER);
-    }catch(e){
-      console.log(e);
-      return;
-    }
+    let storeObj;
+    try{ storeObj = await getStoreValue(store.MASTER); }catch(e){ console.log(e); return; }
     let categsColArr = storeObj[store.MASTER][store.CATEGORIES];
 
     for(let i=0; i< categsColArr.length; i++){
@@ -335,6 +359,7 @@ try {
   }
 
   function setStoreValue(obj){
+    liveStoreObject = obj[store.MASTER];
     chrome.storage.sync.set(obj, function() {});
   }
 
@@ -352,3 +377,4 @@ try {
       hideCanvasSidebar(".offcanvas-categ-reorder");
     }
 };
+
