@@ -14,6 +14,7 @@ const store = {
     FAVI_DOMAIN: "favi_domain"
   }
 
+const alert = document.getElementById("alert");
 const cols = ["col-1", "col-2", "col-3", "col-4", "col-5"]
 const colslen = cols.length;
 var liveStoreObject = "";
@@ -34,7 +35,8 @@ const getStoreValue = async (key) => {
 
   async function constructLinks(){
     let storeObj;
-    try{ storeObj = await getStoreValue(store.MASTER); }catch(e){console.log(e);addEventListerners(); return; }
+    try{ storeObj = await getStoreValue(store.MASTER); 
+    console.log(storeObj);
     colIdx = 0;
     categoriesArr = storeObj[store.MASTER][store.CATEGORIES];
     categLinksObj = storeObj[store.MASTER][store.LINKS];
@@ -52,7 +54,6 @@ const getStoreValue = async (key) => {
     for(let containerNum = 0; containerNum<categoriesArr.length; containerNum++)
     { 
       colCategories = categoriesArr[containerNum];
-
       colCategories.forEach(function(category){
         links = categLinksObj[category];
         if (typeof links === 'undefined'){ return; }
@@ -82,6 +83,7 @@ const getStoreValue = async (key) => {
         columnBody.querySelector("#"+cols[containerNum]).appendChild(new DOMParser().parseFromString(domDivs, 'text/html').getRootNode().body.firstChild);
       });
     };
+    }catch(e){console.log(e);addEventListerners(); return; }
     addEventListerners();
   }
 
@@ -187,9 +189,14 @@ const getStoreValue = async (key) => {
 
 
 function saveImportJson(){
-  let importObj =  {[store.MASTER]: JSON.parse(document.getElementById("imported_json").value)};
-  setStoreValue(importObj);
-  refreshNewTab();
+  let file = document.getElementById("imported_json").files[0];
+  var fr=new FileReader();
+  fr.onload=function(){
+      let importObj =  {[store.MASTER]: JSON.parse(fr.result)};
+      setStoreValue(importObj);
+      refreshNewTab();
+  } 
+  fr.readAsText(file);
 }
 
 
@@ -375,6 +382,7 @@ try {
     if (isEscape) {
       hideCanvasSidebar(".offcanvas-categ-edit-links");
       hideCanvasSidebar(".offcanvas-categ-reorder");
+      hideCanvasSidebar(".offcanvas-import-json");
     }
 };
 

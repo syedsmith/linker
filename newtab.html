@@ -53,16 +53,16 @@
         </div>
     </div>
 
-    <div class="offcanvas offcanvas-end offcanvas-import-json hide w-50" tabindex="-1" aria-labelledby="offcanvasRightLabel" aria-modal="true" role="dialog" style="visibility: visible;">
+    <div class="offcanvas offcanvas-end offcanvas-import-json hide w-30" tabindex="-1" aria-labelledby="offcanvasRightLabel" aria-modal="true" role="dialog" style="visibility: visible;">
         <div class="offcanvas-header">
           <h5 id="offcanvasRightLabel">Import from json</h5>
           <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <div class="d-flex justify-content-end">
-                <div class="m-1"><button id="save_import_json" class="btn btn-primary">Submit</button></div>
-            </div>
-            <textarea placeholder=" Paste linkslinker json here" class="w-100 h-50" id="imported_json"></textarea>
+            <div>Choose file to import</div>
+            <div class="mt-3"><input type="file" id="imported_json"></div>
+            <div class="mt-3"><button id="save_import_json" class="btn btn-primary">Submit</button></div>
+            
         </div>
     </div>
 
@@ -90,10 +90,8 @@
                 <input class="form-check-input cursor-pointer" id="toggle-dark-mode" type="checkbox" name="darkmode" unchecked>
             </div>
         </div>
-        
-
-        
     </nav>
+    
     <div class="container-fluid">
         <div class="row" id="column-body">
             <div class="w-20 column-container" id="col-1"></div>

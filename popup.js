@@ -44,15 +44,33 @@ function getColWithMinCateg(arr){
 }
 
   async function addLinkToNewTab(){
-    const { hostname } = new URL(document.getElementById("linkurl").value);
+    let hostname;
+    try{
+      let { parseUrl } = new URL(document.getElementById("linkurl").value);
+      hostname = parseUrl;
+    }catch(e){
+      alertMessage("Not valid url");
+      return;
+    }
+    let linkName = document.getElementById("linkname").value;
     let favicon_url = "http://www.google.com/s2/favicons?domain="+hostname;
     let categ = document.getElementById("linkcategory").value;
     let storeObj;
+
+    if(linkName.trim().length === 0){
+      alertMessage("Url name cannot be empty");
+      return;
+    }
+    if(categ.trim().length === 0){
+      alertMessage("Category cannot be empty");
+      return;
+    }
+
     let link = {
       [store.LINK] : document.getElementById("linkurl").value,
       [store.DESCRIPTION]: document.getElementById("linkdescr").value,
       [resource.FAVI_DOMAIN]: favicon_url,
-      [store.NAME]: document.getElementById("linkname").value,
+      [store.NAME]: linkName,
       [store.CATEGORY]: categ
     }
     try{
@@ -127,5 +145,10 @@ function getColWithMinCateg(arr){
     }
     
   }
-
   addCategsDataList();
+
+  function alertMessage(msg){
+    let alert = document.getElementById("alrt");
+    alert.textContent = msg;
+    alert.style.display = "block";
+  }
